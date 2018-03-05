@@ -32,3 +32,12 @@ def max_pool_layer(x):
     z = tf.nn.max_pool(x, ksize=[1, 3, 3, 1], strides=[1, 1, 1, 1], padding='SAME')
     z = conv_1x1_layer(z, np.ones((1, 1, m, 16)))
     return z
+
+
+def inception_layer(x, w1, w3, w5):
+    z1 = conv_1x1_layer(x, w1)
+    z3 = conv_3x3_layer(x, w3)
+    z5 = conv_5x5_layer(x, w5)
+    zp = max_pool_layer(x)
+    z = tf.concat([z1, z3, z5, zp], -1)
+    return z

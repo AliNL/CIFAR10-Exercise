@@ -60,6 +60,16 @@ class ForwardPropagationTest(unittest.TestCase):
             z = sess.run(max_pool_layer(x))
         self.assertTrue((np.ones((1, 3, 3, 16)) == z).all())
 
+    def test_dimension_of_inception_layer(self):
+        from src.forward_propagation import inception_layer
+        x = tf.cast(np.random.randn(2, 24, 24, 3), tf.float32)
+        w1 = tf.cast(np.random.randn(1, 1, 3, 64), tf.float32)
+        w3 = tf.cast(np.random.randn(3, 3, 16, 32), tf.float32)
+        w5 = tf.cast(np.random.randn(5, 5, 16, 16), tf.float32)
+        with tf.Session() as sess:
+            z = sess.run(inception_layer(x, w1, w3, w5))
+        self.assertEqual((2, 24, 24, 128), z.shape)
+
 
 if __name__ == '__main__':
     unittest.main()
