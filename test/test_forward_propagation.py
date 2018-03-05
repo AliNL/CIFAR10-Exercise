@@ -35,6 +35,24 @@ class ForwardPropagationTest(unittest.TestCase):
                            [[16 * 6], [16 * 9], [16 * 6]],
                            [[16 * 4], [16 * 6], [16 * 4]]]] == z).all())
 
+    def test_exceptions_of_conv_5x5_layer(self):
+        from src.forward_propagation import conv_5x5_layer
+        x = np.random.randn(2, 24, 24, 3)
+        w = np.random.randn(3, 3, 3, 3)
+        self.assertRaises(AssertionError, conv_5x5_layer, x, w)
+
+    def test_result_of_conv_5x5_layer(self):
+        from src.forward_propagation import conv_5x5_layer
+        with tf.Session() as sess:
+            x = sess.run(tf.cast(np.ones((1, 5, 5, 1)), tf.float32))
+            w = sess.run(tf.cast(np.ones((5, 5, 16, 1)), tf.float32))
+            z = sess.run(conv_5x5_layer(x, w))
+        self.assertTrue(([[[[16 * 9], [16 * 12], [16 * 15], [16 * 12], [16 * 9]],
+                           [[16 * 12], [16 * 16], [16 * 20], [16 * 16], [16 * 12]],
+                           [[16 * 15], [16 * 20], [16 * 25], [16 * 20], [16 * 15]],
+                           [[16 * 12], [16 * 16], [16 * 20], [16 * 16], [16 * 12]],
+                           [[16 * 9], [16 * 12], [16 * 15], [16 * 12], [16 * 9]]]] == z).all())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -16,3 +16,12 @@ def conv_3x3_layer(x, w):
     z = conv_1x1_layer(x, np.ones((1, 1, m, 16)))
     z = tf.nn.conv2d(z, w, strides=[1, 1, 1, 1], padding='SAME')
     return z
+
+
+def conv_5x5_layer(x, w):
+    assert w.shape[0] == 5
+    assert w.shape[1] == 5
+    m = x.shape[-1]
+    z = conv_1x1_layer(x, np.ones((1, 1, m, 16)))
+    z = tf.nn.conv2d(z, w, strides=[1, 1, 1, 1], padding='SAME')
+    return z
