@@ -53,6 +53,13 @@ class ForwardPropagationTest(unittest.TestCase):
                            [[16 * 12], [16 * 16], [16 * 20], [16 * 16], [16 * 12]],
                            [[16 * 9], [16 * 12], [16 * 15], [16 * 12], [16 * 9]]]] == z).all())
 
+    def test_result_of_max_pool_layer(self):
+        from src.forward_propagation import max_pool_layer
+        with tf.Session() as sess:
+            x = sess.run(tf.cast(np.ones((1, 3, 3, 1)), tf.float32))
+            z = sess.run(max_pool_layer(x))
+        self.assertTrue((np.ones((1, 3, 3, 16)) == z).all())
+
 
 if __name__ == '__main__':
     unittest.main()
