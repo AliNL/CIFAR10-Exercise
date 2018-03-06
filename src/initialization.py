@@ -1,5 +1,7 @@
 import pickle
+import random
 
+import numpy as np
 import tensorflow as tf
 
 
@@ -14,6 +16,7 @@ def get_training_set(i):
     x = the_dict[b'data']
     x = format_x_data(x)
     y = the_dict[b'labels']
+    y = np.array(y).reshape(-1, 1)
     return x, y
 
 
@@ -22,6 +25,7 @@ def get_dev_set():
     x = the_dict[b'data'][:5000]
     x = format_x_data(x)
     y = the_dict[b'labels'][:5000]
+    y = np.array(y).reshape(-1, 1)
     return x, y
 
 
@@ -30,6 +34,7 @@ def get_test_set():
     x = the_dict[b'data'][5000:]
     x = format_x_data(x)
     y = the_dict[b'labels'][5000:]
+    y = np.array(y).reshape(-1, 1)
     return x, y
 
 
@@ -55,3 +60,20 @@ def initialize_parameters():
                   }
 
     return parameters
+
+
+def random_mini_batches(x, y, size):
+    m = x.shape[0]
+    n = int(m / size)
+    last_batch_size = m % size
+    id_list = list(range(m))
+    random.shuffle(id_list)
+    mini_batches = []
+    for i in range(n):
+        start_id = i * size
+        mini_id_list = id_list[start_id:(start_id + size)]
+        mini_batches.append((x[mini_id_list], y[mini_id_list]))
+    if last_batch_size:
+        mini_id_list = id_list[-last_batch_size:]
+        mini_batches.append((x[mini_id_list], y[mini_id_list]))
+    return mini_batches

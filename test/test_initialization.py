@@ -23,6 +23,32 @@ class InitializationTest(unittest.TestCase):
         self.assertEqual((3, 3, 16, 32), parameters['W23'].shape)
         self.assertEqual((5, 5, 16, 16), parameters['w25'].shape)
 
+    def test_result_of_random_mini_batches_without_last_batch(self):
+        from src.initialization import random_mini_batches
+        x = np.array(range(10)).reshape(10, 1)
+        y = np.array(range(10)).reshape(10, 1)
+        mini_batches = random_mini_batches(x, y, 2)
+        self.assertEqual(5, len(mini_batches))
+        sum_y = 0
+        for mini_batch in mini_batches:
+            this_x, this_y = mini_batch
+            self.assertTrue((this_x == this_y).all())
+            sum_y += np.sum(this_y)
+        self.assertEqual(45, sum_y)
+
+    def test_result_of_random_mini_batches_with_last_batch(self):
+        from src.initialization import random_mini_batches
+        x = np.array(range(10)).reshape(10, 1)
+        y = np.array(range(10)).reshape(10, 1)
+        mini_batches = random_mini_batches(x, y, 3)
+        self.assertEqual(4, len(mini_batches))
+        sum_y = 0
+        for mini_batch in mini_batches:
+            this_x, this_y = mini_batch
+            self.assertTrue((this_x == this_y).all())
+            sum_y += np.sum(this_y)
+        self.assertEqual(45, sum_y)
+
 
 if __name__ == '__main__':
     unittest.main()
