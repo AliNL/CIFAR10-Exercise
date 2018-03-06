@@ -41,3 +41,27 @@ def inception_layer(x, w1, w3, w5):
     zp = max_pool_layer(x)
     z = tf.concat([z1, z3, z5, zp], -1)
     return z
+
+
+def forward_prop(x, parameters):
+    w11 = parameters['w11']
+    w13 = parameters['W13']
+    w15 = parameters['w15']
+    w21 = parameters['w21']
+    w23 = parameters['W23']
+    w25 = parameters['w25']
+
+    x = conv_1x1_layer(x, np.ones((1, 1, 3, 128)))
+
+    z1 = inception_layer(x, w11, w13, w15)
+    a1 = tf.nn.relu(z1)
+
+    z2 = inception_layer(a1, w21, w23, w25)
+    a2 = tf.nn.relu(z2)
+    p2 = max_pool_layer(a2)
+
+    p2 = tf.contrib.layers.flatten(p2)
+
+    z3 = tf.contrib.layers.fully_connected(p2, 10, activation_fn=None)
+
+    return z3
