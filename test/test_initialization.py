@@ -13,6 +13,14 @@ class InitializationTest(unittest.TestCase):
         self.assertEqual(x[0][1], x_formatted[0][0][1][0])
         self.assertEqual(x[0][1024], x_formatted[0][0][0][1])
 
+    def test_result_of_format_y_data(self):
+        from src.initialization import format_y_data
+        y = [3, 2, 8]
+        y_formatted = format_y_data(y)
+        self.assertTrue(([[0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                          [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                          [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]] == y_formatted).all())
+
     def test_result_of_initialize_parameters(self):
         from src.initialization import initialize_parameters
         parameters = initialize_parameters()

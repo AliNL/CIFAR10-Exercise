@@ -4,6 +4,8 @@ import random
 import numpy as np
 import tensorflow as tf
 
+NUMBER_OF_LABELS = 10
+
 
 def unpickle(file):
     with open(file, 'rb') as fo:
@@ -14,32 +16,33 @@ def unpickle(file):
 def get_training_set(i):
     the_dict = unpickle('cifar-10-batches-py/data_batch_' + str(i))
     x = the_dict[b'data']
-    x = format_x_data(x)
     y = the_dict[b'labels']
-    y = np.array(y).reshape(-1, 1)
-    return x, y
+    return format_x_data(x), format_y_data(y)
 
 
 def get_dev_set():
     the_dict = unpickle('cifar-10-batches-py/test_batch')
     x = the_dict[b'data'][:5000]
-    x = format_x_data(x)
     y = the_dict[b'labels'][:5000]
-    y = np.array(y).reshape(-1, 1)
-    return x, y
+    return format_x_data(x), format_y_data(y)
 
 
 def get_test_set():
     the_dict = unpickle('cifar-10-batches-py/test_batch')
     x = the_dict[b'data'][5000:]
-    x = format_x_data(x)
     y = the_dict[b'labels'][5000:]
-    y = np.array(y).reshape(-1, 1)
-    return x, y
+    return format_x_data(x), format_y_data(y)
 
 
 def format_x_data(x):
     return x.reshape(-1, 3, 32, 32).transpose(0, 2, 3, 1)
+
+
+def format_y_data(y):
+    m = len(y)
+    k = np.ones((m, 1)) * range(NUMBER_OF_LABELS)
+    y = np.array(y).reshape(-1, 1)
+    return y == k
 
 
 def initialize_parameters():
@@ -77,3 +80,9 @@ def random_mini_batches(x, y, size):
         mini_id_list = id_list[-last_batch_size:]
         mini_batches.append((x[mini_id_list], y[mini_id_list]))
     return mini_batches
+
+
+def create_placeholders(h, w, c):
+    x = tf.placeholder(shape=[None, h, w, c], dtype="float")
+    y = tf.placeholder(shape=[None, NUMBER_OF_LABELS], dtype="float")
+    return x, y
