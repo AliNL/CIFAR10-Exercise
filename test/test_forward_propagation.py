@@ -27,13 +27,14 @@ class ForwardPropagationTest(unittest.TestCase):
 
     def test_result_of_conv_3x3_layer(self):
         from src.forward_propagation import conv_3x3_layer
+        c = 4
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 3, 3, 1)), tf.float32))
-            w = sess.run(tf.cast(np.ones((3, 3, 16, 1)), tf.float32))
+            w = sess.run(tf.cast(np.ones((3, 3, c, 1)), tf.float32))
             z = sess.run(conv_3x3_layer(x, w))
-        self.assertTrue(([[[[16 * 4], [16 * 6], [16 * 4]],
-                           [[16 * 6], [16 * 9], [16 * 6]],
-                           [[16 * 4], [16 * 6], [16 * 4]]]] == z).all())
+        self.assertTrue(([[[[c * 4], [c * 6], [c * 4]],
+                           [[c * 6], [c * 9], [c * 6]],
+                           [[c * 4], [c * 6], [c * 4]]]] == z).all())
 
     def test_exceptions_of_conv_5x5_layer(self):
         from src.forward_propagation import conv_5x5_layer
@@ -43,32 +44,34 @@ class ForwardPropagationTest(unittest.TestCase):
 
     def test_result_of_conv_5x5_layer(self):
         from src.forward_propagation import conv_5x5_layer
+        c = 4
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 5, 5, 1)), tf.float32))
-            w = sess.run(tf.cast(np.ones((5, 5, 16, 1)), tf.float32))
+            w = sess.run(tf.cast(np.ones((5, 5, c, 1)), tf.float32))
             z = sess.run(conv_5x5_layer(x, w))
-        self.assertTrue(([[[[16 * 9], [16 * 12], [16 * 15], [16 * 12], [16 * 9]],
-                           [[16 * 12], [16 * 16], [16 * 20], [16 * 16], [16 * 12]],
-                           [[16 * 15], [16 * 20], [16 * 25], [16 * 20], [16 * 15]],
-                           [[16 * 12], [16 * 16], [16 * 20], [16 * 16], [16 * 12]],
-                           [[16 * 9], [16 * 12], [16 * 15], [16 * 12], [16 * 9]]]] == z).all())
+        self.assertTrue(([[[[c * 9], [c * 12], [c * 15], [c * 12], [c * 9]],
+                           [[c * 12], [c * 16], [c * 20], [c * 16], [c * 12]],
+                           [[c * 15], [c * 20], [c * 25], [c * 20], [c * 15]],
+                           [[c * 12], [c * 16], [c * 20], [c * 16], [c * 12]],
+                           [[c * 9], [c * 12], [c * 15], [c * 12], [c * 9]]]] == z).all())
 
     def test_result_of_max_pool_layer(self):
         from src.forward_propagation import max_pool_layer
+        c = 4
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 3, 3, 1)), tf.float32))
             z = sess.run(max_pool_layer(x))
-        self.assertTrue((np.ones((1, 3, 3, 16)) == z).all())
+        self.assertTrue((np.ones((1, 3, 3, c)) == z).all())
 
     def test_dimension_of_inception_layer(self):
         from src.forward_propagation import inception_layer
-        x = tf.cast(np.random.randn(2, 24, 24, 3), tf.float32)
-        w1 = tf.cast(np.random.randn(1, 1, 3, 64), tf.float32)
-        w3 = tf.cast(np.random.randn(3, 3, 16, 32), tf.float32)
-        w5 = tf.cast(np.random.randn(5, 5, 16, 16), tf.float32)
+        x = tf.cast(np.random.randn(2, 24, 24, 24), tf.float32)
+        w1 = tf.cast(np.random.randn(1, 1, 24, 8), tf.float32)
+        w3 = tf.cast(np.random.randn(3, 3, 4, 8), tf.float32)
+        w5 = tf.cast(np.random.randn(5, 5, 4, 4), tf.float32)
         with tf.Session() as sess:
             z = sess.run(inception_layer(x, w1, w3, w5))
-        self.assertEqual((2, 24, 24, 128), z.shape)
+        self.assertEqual((2, 24, 24, 24), z.shape)
 
 
 if __name__ == '__main__':
