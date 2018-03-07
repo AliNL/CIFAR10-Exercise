@@ -51,10 +51,10 @@ def compute_cost(z, y):
 
 def forward_prop(x, parameters):
     w11 = parameters['w11']
-    w13 = parameters['W13']
+    w13 = parameters['w13']
     w15 = parameters['w15']
     w21 = parameters['w21']
-    w23 = parameters['W23']
+    w23 = parameters['w23']
     w25 = parameters['w25']
 
     x = conv_1x1_layer(x, np.ones((1, 1, 3, INCEPTION_LAYER_CHANNEL)))
