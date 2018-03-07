@@ -49,28 +49,33 @@ def train(learning_rate=0.001, mini_batch_size=512, number_of_steps=100):
                 for mini_batch in mini_batches:
                     this_x, this_y = mini_batch
                     sess.run(optimizer, feed_dict={x: this_x, y: this_y})
+                train_summary, c, ac = sess.run([merged_summary_op, cost, accuracy],
+                                                feed_dict={x: x_train, y: y_train})
             else:
-                sess.run(optimizer, feed_dict={x: x_train, y: y_train})
-
-            if step % 10 == 0:
-                train_error = sess.run(merged_summary_op, feed_dict={x: x_train, y: y_train})
-                train_writer.add_summary(train_error, step)
+                train_summary, c, ac, _ = sess.run([merged_summary_op, cost, accuracy, optimizer],
+                                                   feed_dict={x: x_train, y: y_train})
+                train_writer.add_summary(train_summary, step - 1)
                 train_writer.flush()
 
-                dev_error = sess.run(merged_summary_op, feed_dict={x: x_dev, y: y_dev})
-                dev_writer.add_summary(dev_error, step)
-                dev_writer.flush()
-
-                test_error = sess.run(merged_summary_op, feed_dict={x: x_test, y: y_test})
-                test_writer.add_summary(test_error, step)
-                test_writer.flush()
-
+            if step % 10 == 0:
                 if step:
                     print('step:', step)
-                    print('seconds per step: ', (datetime.datetime.now() - start_time).total_seconds() / step)
-                    print('=' * 100)
+                    print('seconds per step:', (datetime.datetime.now() - start_time).total_seconds() / step)
+                print('train cost:', c, 'train accuracy:', ac)
+
+                dev_summary, c, ac = sess.run([merged_summary_op, cost, accuracy], feed_dict={x: x_dev, y: y_dev})
+                print('dev cost:', c, 'dev accuracy:', ac)
+                dev_writer.add_summary(dev_summary, step)
+                dev_writer.flush()
+
+                test_summary, c, ac = sess.run([merged_summary_op, cost, accuracy], feed_dict={x: x_test, y: y_test})
+                print('test cost:', c, 'test accuracy:', ac)
+                test_writer.add_summary(test_summary, step)
+                test_writer.flush()
+                print('=' * 100)
+
     print('Finish time:', datetime.datetime.now())
 
 
 if __name__ == '__main__':
-    train(learning_rate=0.001, mini_batch_size=0, number_of_steps=300)
+    train(learning_rate=0.001, mini_batch_size=0, number_of_steps=50)
