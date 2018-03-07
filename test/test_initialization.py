@@ -22,14 +22,15 @@ class InitializationTest(unittest.TestCase):
                           [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]] == y_formatted).all())
 
     def test_result_of_initialize_parameters(self):
-        from src.initialization import initialize_parameters
+        from src.initialization import initialize_parameters, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL, CONV_3_CHANNEL, \
+            CONV_5_CHANNEL, MID_CHANNEL
         parameters = initialize_parameters()
-        self.assertEqual((1, 1, 128, 64), parameters['w11'].shape)
-        self.assertEqual((3, 3, 16, 32), parameters['W13'].shape)
-        self.assertEqual((5, 5, 16, 16), parameters['w15'].shape)
-        self.assertEqual((1, 1, 128, 64), parameters['w21'].shape)
-        self.assertEqual((3, 3, 16, 32), parameters['W23'].shape)
-        self.assertEqual((5, 5, 16, 16), parameters['w25'].shape)
+        self.assertEqual((1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL), parameters['w11'].shape)
+        self.assertEqual((3, 3, MID_CHANNEL, CONV_3_CHANNEL), parameters['W13'].shape)
+        self.assertEqual((5, 5, MID_CHANNEL, CONV_5_CHANNEL), parameters['w15'].shape)
+        self.assertEqual((1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL), parameters['w21'].shape)
+        self.assertEqual((3, 3, MID_CHANNEL, CONV_3_CHANNEL), parameters['W23'].shape)
+        self.assertEqual((5, 5, MID_CHANNEL, CONV_5_CHANNEL), parameters['w25'].shape)
 
     def test_result_of_random_mini_batches_without_last_batch(self):
         from src.initialization import random_mini_batches

@@ -26,8 +26,8 @@ class ForwardPropagationTest(unittest.TestCase):
         self.assertRaises(AssertionError, conv_3x3_layer, x, w)
 
     def test_result_of_conv_3x3_layer(self):
-        from src.forward_propagation import conv_3x3_layer
-        c = 4
+        from src.forward_propagation import conv_3x3_layer, MID_CHANNEL
+        c = MID_CHANNEL
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 3, 3, 1)), tf.float32))
             w = sess.run(tf.cast(np.ones((3, 3, c, 1)), tf.float32))
@@ -43,8 +43,8 @@ class ForwardPropagationTest(unittest.TestCase):
         self.assertRaises(AssertionError, conv_5x5_layer, x, w)
 
     def test_result_of_conv_5x5_layer(self):
-        from src.forward_propagation import conv_5x5_layer
-        c = 4
+        from src.forward_propagation import conv_5x5_layer, MID_CHANNEL
+        c = MID_CHANNEL
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 5, 5, 1)), tf.float32))
             w = sess.run(tf.cast(np.ones((5, 5, c, 1)), tf.float32))
@@ -56,22 +56,23 @@ class ForwardPropagationTest(unittest.TestCase):
                            [[c * 9], [c * 12], [c * 15], [c * 12], [c * 9]]]] == z).all())
 
     def test_result_of_max_pool_layer(self):
-        from src.forward_propagation import max_pool_layer
-        c = 4
+        from src.forward_propagation import max_pool_layer, MAX_POOL_CHANNEL
+        c = MAX_POOL_CHANNEL
         with tf.Session() as sess:
             x = sess.run(tf.cast(np.ones((1, 3, 3, 1)), tf.float32))
             z = sess.run(max_pool_layer(x))
         self.assertTrue((np.ones((1, 3, 3, c)) == z).all())
 
     def test_dimension_of_inception_layer(self):
-        from src.forward_propagation import inception_layer
-        x = tf.cast(np.random.randn(2, 24, 24, 24), tf.float32)
-        w1 = tf.cast(np.random.randn(1, 1, 24, 8), tf.float32)
-        w3 = tf.cast(np.random.randn(3, 3, 4, 8), tf.float32)
-        w5 = tf.cast(np.random.randn(5, 5, 4, 4), tf.float32)
+        from src.forward_propagation import inception_layer, INCEPTION_LAYER_CHANNEL, MID_CHANNEL
+        from src.initialization import CONV_1_CHANNEL, CONV_3_CHANNEL, CONV_5_CHANNEL
+        x = tf.cast(np.random.randn(2, 24, 24, INCEPTION_LAYER_CHANNEL), tf.float32)
+        w1 = tf.cast(np.random.randn(1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL), tf.float32)
+        w3 = tf.cast(np.random.randn(3, 3, MID_CHANNEL, CONV_3_CHANNEL), tf.float32)
+        w5 = tf.cast(np.random.randn(5, 5, MID_CHANNEL, CONV_5_CHANNEL), tf.float32)
         with tf.Session() as sess:
             z = sess.run(inception_layer(x, w1, w3, w5))
-        self.assertEqual((2, 24, 24, 24), z.shape)
+        self.assertEqual((2, 24, 24, INCEPTION_LAYER_CHANNEL), z.shape)
 
 
 if __name__ == '__main__':
