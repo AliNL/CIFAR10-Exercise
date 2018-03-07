@@ -54,19 +54,17 @@ def format_y_data(y):
 
 def initialize_parameters():
     tf.set_random_seed(1)
-    with tf.name_scope('first_layer'):
-        w11 = tf.get_variable('w11', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
-                              initializer=tf.contrib.layers.xavier_initializer())
-        w13 = tf.get_variable('w13', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
-                              initializer=tf.contrib.layers.xavier_initializer())
-        w15 = tf.get_variable('w15', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
-                              initializer=tf.contrib.layers.xavier_initializer())
-    with tf.name_scope('second_layer'):
-        w21 = tf.get_variable('w21', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
-                              initializer=tf.contrib.layers.xavier_initializer())
-        w23 = tf.get_variable('w23', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
-                              initializer=tf.contrib.layers.xavier_initializer())
-        w25 = tf.get_variable('w25', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
+    w11 = tf.get_variable('w11', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w13 = tf.get_variable('w13', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w15 = tf.get_variable('w15', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w21 = tf.get_variable('w21', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w23 = tf.get_variable('w23', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w25 = tf.get_variable('w25', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
                           initializer=tf.contrib.layers.xavier_initializer())
 
     parameters = {'w11': w11,
@@ -98,6 +96,6 @@ def random_mini_batches(x, y, size):
 
 
 def create_placeholders(h, w, c):
-    x = tf.placeholder(shape=[None, h, w, c], dtype="float")
-    y = tf.placeholder(shape=[None, NUMBER_OF_LABELS], dtype="float")
+    x = tf.placeholder(shape=[None, h, w, c], dtype="float", name='X')
+    y = tf.placeholder(shape=[None, NUMBER_OF_LABELS], dtype="float", name='Y')
     return x, y
