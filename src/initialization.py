@@ -5,6 +5,13 @@ import numpy as np
 import tensorflow as tf
 
 NUMBER_OF_LABELS = 10
+MID_CHANNEL = 4
+CONV_1_CHANNEL = 8
+CONV_3_CHANNEL = 8
+CONV_5_CHANNEL = 4
+MAX_POOL_CHANNEL = 4
+
+INCEPTION_LAYER_CHANNEL = CONV_1_CHANNEL + CONV_3_CHANNEL + CONV_5_CHANNEL + MAX_POOL_CHANNEL
 
 
 def unpickle(file):
@@ -47,12 +54,18 @@ def format_y_data(y):
 
 def initialize_parameters():
     tf.set_random_seed(1)
-    w11 = tf.get_variable('w11', [1, 1, 24, 8], initializer=tf.contrib.layers.xavier_initializer())
-    w13 = tf.get_variable('W13', [3, 3, 4, 8], initializer=tf.contrib.layers.xavier_initializer())
-    w15 = tf.get_variable('w15', [5, 5, 4, 4], initializer=tf.contrib.layers.xavier_initializer())
-    w21 = tf.get_variable('w21', [1, 1, 24, 8], initializer=tf.contrib.layers.xavier_initializer())
-    w23 = tf.get_variable('W23', [3, 3, 4, 8], initializer=tf.contrib.layers.xavier_initializer())
-    w25 = tf.get_variable('w25', [5, 5, 4, 4], initializer=tf.contrib.layers.xavier_initializer())
+    w11 = tf.get_variable('w11', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w13 = tf.get_variable('W13', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w15 = tf.get_variable('w15', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w21 = tf.get_variable('w21', [1, 1, INCEPTION_LAYER_CHANNEL, CONV_1_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w23 = tf.get_variable('W23', [3, 3, MID_CHANNEL, CONV_3_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
+    w25 = tf.get_variable('w25', [5, 5, MID_CHANNEL, CONV_5_CHANNEL],
+                          initializer=tf.contrib.layers.xavier_initializer())
 
     parameters = {'w11': w11,
                   'W13': w13,

@@ -65,12 +65,12 @@ def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_s
                 test_writer.add_summary(test_error, step)
                 test_writer.flush()
 
-                print('step:', step)
                 if step:
+                    print('step:', step)
                     print('seconds per step: ', (datetime.datetime.now() - start_time).total_seconds() / step)
-                print('=' * 100)
+                    print('=' * 100)
     print('Finish time:', datetime.datetime.now())
 
 
 if __name__ == '__main__':
-    train(learning_rate=0.001, mini_batch=False, number_of_steps=100)
+    train(learning_rate=0.001, mini_batch=False, number_of_steps=300)
