@@ -9,7 +9,7 @@ from src.initialization import *
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_steps=100):
+def train(learning_rate=0.001, mini_batch_size=512, number_of_steps=100):
     tf.reset_default_graph()
 
     x_train, y_train = get_training_set(1)
@@ -44,8 +44,8 @@ def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_s
         start_time = datetime.datetime.now()
         print('Start time:', start_time)
         for step in range(number_of_steps):
-            if mini_batch:
-                mini_batches = random_mini_batches(x_train, y_train, minibatch_size)
+            if mini_batch_size:
+                mini_batches = random_mini_batches(x_train, y_train, mini_batch_size)
                 for mini_batch in mini_batches:
                     this_x, this_y = mini_batch
                     sess.run(optimizer, feed_dict={x: this_x, y: this_y})
@@ -73,4 +73,4 @@ def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_s
 
 
 if __name__ == '__main__':
-    train(learning_rate=0.001, mini_batch=False, number_of_steps=300)
+    train(learning_rate=0.001, mini_batch_size=0, number_of_steps=300)
