@@ -36,9 +36,9 @@ def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_s
 
     with tf.Session() as sess:
         merged_summary_op = tf.summary.merge_all()
-        train_writer = tf.summary.FileWriter('log/plot_1')
-        dev_writer = tf.summary.FileWriter('log/plot_2')
-        test_writer = tf.summary.FileWriter('log/plot_3')
+        train_writer = tf.summary.FileWriter('log/train')
+        dev_writer = tf.summary.FileWriter('log/dev')
+        test_writer = tf.summary.FileWriter('log/test')
         sess.run(tf.global_variables_initializer())
 
         start_time = datetime.datetime.now()
