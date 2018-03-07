@@ -66,7 +66,8 @@ def train(learning_rate=0.001, mini_batch=False, minibatch_size=512, number_of_s
                 test_writer.flush()
 
                 print('step:', step)
-                print('seconds per step: ', (datetime.datetime.now() - start_time).total_seconds() / step)
+                if step:
+                    print('seconds per step: ', (datetime.datetime.now() - start_time).total_seconds() / step)
                 print('=' * 100)
     print('Finish time:', datetime.datetime.now())
 
