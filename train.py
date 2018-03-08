@@ -9,15 +9,15 @@ from src.initialization import *
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-def train(learning_rate=0.001, mini_batch_size=512, number_of_steps=100, load_parameters=False):
+def train(id_of_batch=1, learning_rate=0.001, mini_batch_size=512, number_of_steps=100, load_parameters=False):
     tf.reset_default_graph()
 
-    x_train, y_train = get_training_set(1)
-    x_train, y_train = x_train[:500], y_train[:500]
+    x_train, y_train = get_training_set(id_of_batch)
+    x_train, y_train = x_train, y_train
     x_dev, y_dev = get_dev_set()
-    x_dev, y_dev = x_dev[:200], y_dev[:200]
+    x_dev, y_dev = x_dev, y_dev
     x_test, y_test = get_test_set()
-    x_test, y_test = x_test[:200], y_test[:200]
+    x_test, y_test = x_test, y_test
 
     _, h, w, c = x_train.shape
 
@@ -92,4 +92,4 @@ def train(learning_rate=0.001, mini_batch_size=512, number_of_steps=100, load_pa
 
 
 if __name__ == '__main__':
-    train(learning_rate=0.001, mini_batch_size=0, number_of_steps=100, load_parameters=True)
+    train(id_of_batch=1, learning_rate=0.001, mini_batch_size=0, number_of_steps=100, load_parameters=True)
