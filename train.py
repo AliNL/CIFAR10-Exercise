@@ -92,4 +92,4 @@ def train(id_of_batch=1, learning_rate=0.001, mini_batch_size=512, number_of_ste
 
 
 if __name__ == '__main__':
-    train(id_of_batch=1, learning_rate=0.001, mini_batch_size=0, number_of_steps=100, load_parameters=True)
+    train(id_of_batch=1, learning_rate=0.001, mini_batch_size=1000, number_of_steps=50, load_parameters=False)
