@@ -13,11 +13,8 @@ def train(id_of_batch=1, learning_rate=0.001, mini_batch_size=512, number_of_ste
     tf.reset_default_graph()
 
     x_train, y_train = get_training_set(id_of_batch)
-    x_train, y_train = x_train, y_train
     x_dev, y_dev = get_dev_set()
-    x_dev, y_dev = x_dev, y_dev
     x_test, y_test = get_test_set()
-    x_test, y_test = x_test, y_test
 
     _, h, w, c = x_train.shape
 
